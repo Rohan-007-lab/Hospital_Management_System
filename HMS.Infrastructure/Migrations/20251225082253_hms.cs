@@ -415,7 +415,7 @@ namespace HMS.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreatedAt", "DateOfBirth", "Email", "FirstName", "Gender", "IsActive", "IsDeleted", "LastName", "PasswordHash", "PhoneNumber", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UpdatedAt" },
-                values: new object[] { 1, "Hospital Address", new DateTime(2025, 12, 25, 6, 5, 59, 39, DateTimeKind.Utc).AddTicks(8357), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@hospital.com", "Admin", 1, true, false, "User", "$2a$11$zKCTgxmbLSHT3yoBke/FQuG5LgYlob0P7SPrYyuHiJ8btX9/GqxXK", "9999999999", null, null, 1, null });
+                values: new object[] { 1, "Hospital Address", new DateTime(2025, 12, 25, 8, 22, 52, 502, DateTimeKind.Utc).AddTicks(1008), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@hospital.com", "Admin", 1, true, false, "User", "$2a$11$/W69XZ0l6BKo2kzUHHO8juN.OYcpVpnFRxpYRZT.rfN25pTfbAGS.", "9999999999", null, null, 1, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_AppointmentNumber",

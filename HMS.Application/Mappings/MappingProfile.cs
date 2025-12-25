@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-using AutoMapper;
+﻿using AutoMapper;
 using HMS.Application.DTOs.Appointment;
+using HMS.Application.DTOs.Bed;
 using HMS.Application.DTOs.Bill;
 using HMS.Application.DTOs.Doctor;
 using HMS.Application.DTOs.LabTest;
@@ -14,8 +8,14 @@ using HMS.Application.DTOs.Medicine;
 using HMS.Application.DTOs.Patient;
 using HMS.Application.DTOs.Prescription;
 using HMS.Application.DTOs.User;
+using HMS.Application.DTOs.Ward;
 using HMS.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace HMS.Application.Mappings;
 
@@ -75,5 +75,17 @@ public class MappingProfile : Profile
         CreateMap<BillItem, BillItemDto>();
         CreateMap<CreateBillItemDto, BillItem>()
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Quantity * src.UnitPrice));
+
+        // Ward Mappings
+        CreateMap<Ward, WardDto>();
+        CreateMap<CreateWardDto, Ward>();
+
+        // Bed Mappings
+        CreateMap<Bed, BedDto>()
+            .ForMember(dest => dest.WardName, opt => opt.MapFrom(src => src.Ward.WardName))
+            .ForMember(dest => dest.CurrentPatientName, opt => opt.MapFrom(src =>
+                src.CurrentPatientId.HasValue ? "Patient Name" : null));
+        CreateMap<CreateBedDto, Bed>();
+
     }
 }

@@ -277,7 +277,7 @@ public class ApplicationDbContext : DbContext
 
     private void SeedData(ModelBuilder modelBuilder)
     {
-        // Seed Admin User
+        // Admin User
         var adminUser = new User
         {
             Id = 1,
@@ -295,5 +295,15 @@ public class ApplicationDbContext : DbContext
         };
 
         modelBuilder.Entity<User>().HasData(adminUser);
+
+        // Sample Medicines
+        var medicines = new List<Medicine>
+    {
+        new Medicine { Id = 1, MedicineName = "Paracetamol", GenericName = "Acetaminophen", Manufacturer = "ABC Pharma", Category = "Pain Relief", UnitPrice = 10.00M, StockQuantity = 500, ReorderLevel = 100, CreatedAt = DateTime.UtcNow },
+        new Medicine { Id = 2, MedicineName = "Amoxicillin", GenericName = "Amoxicillin", Manufacturer = "XYZ Pharma", Category = "Antibiotic", UnitPrice = 50.00M, StockQuantity = 300, ReorderLevel = 50, CreatedAt = DateTime.UtcNow },
+        new Medicine { Id = 3, MedicineName = "Ibuprofen", GenericName = "Ibuprofen", Manufacturer = "DEF Pharma", Category = "Pain Relief", UnitPrice = 15.00M, StockQuantity = 400, ReorderLevel = 80, CreatedAt = DateTime.UtcNow }
+    };
+
+        modelBuilder.Entity<Medicine>().HasData(medicines);
     }
 }

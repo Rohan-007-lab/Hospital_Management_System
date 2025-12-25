@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251225060600_hms")]
+    [Migration("20251225082253_hms")]
     partial class hms
     {
         /// <inheritdoc />
@@ -785,7 +785,7 @@ namespace HMS.Infrastructure.Migrations
                         {
                             Id = 1,
                             Address = "Hospital Address",
-                            CreatedAt = new DateTime(2025, 12, 25, 6, 5, 59, 39, DateTimeKind.Utc).AddTicks(8357),
+                            CreatedAt = new DateTime(2025, 12, 25, 8, 22, 52, 502, DateTimeKind.Utc).AddTicks(1008),
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@hospital.com",
                             FirstName = "Admin",
@@ -793,7 +793,7 @@ namespace HMS.Infrastructure.Migrations
                             IsActive = true,
                             IsDeleted = false,
                             LastName = "User",
-                            PasswordHash = "$2a$11$zKCTgxmbLSHT3yoBke/FQuG5LgYlob0P7SPrYyuHiJ8btX9/GqxXK",
+                            PasswordHash = "$2a$11$/W69XZ0l6BKo2kzUHHO8juN.OYcpVpnFRxpYRZT.rfN25pTfbAGS.",
                             PhoneNumber = "9999999999",
                             Role = 1
                         });
