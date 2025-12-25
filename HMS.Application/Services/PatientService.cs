@@ -242,4 +242,137 @@ public class PatientService : IPatientService
             return ApiResponse<PatientDto>.FailureResponse($"Error: {ex.Message}");
         }
     }
+        
+
+
+        public async Task<ApiResponse<PagedResult<PatientDto>>> GetPatientsPagedAsync(PagedRequest request)
+    {
+        try
+        {
+            var query = await _unitOfWork.Patients.GetAllAsync();
+            var patientsList = query.ToList();
+
+            // Search
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                var searchLower = request.SearchTerm.ToLower();
+
+                var filteredList = new List<Patient>();
+                foreach (var patient in patientsList)
+                {
+                    var users = await _unitOfWork.Users.FindAsync(u => u.Id == patient.UserId);
+                    var user = users.FirstOrDefault();
+
+                    if (user != null)
+                    {
+                        patient.User = user;
+
+                        if (patient.PatientNumber.ToLower().Contains(searchLower) ||
+                            user.FirstName.ToLower().Contains(searchLower) ||
+                            user.LastName.ToLower().Contains(searchLower) ||
+                            user.Email.ToLower().Contains(searchLower) ||
+                            user.PhoneNumber.Contains(searchLower))
+                        {
+                            filteredList.Add(patient);
+                        }
+                    }
+                }
+
+                patientsList = filteredList;
+            }
+            else
+            {
+                // Load users for all patients
+                foreach (var patient in patientsList)
+                {
+                    var users = await _unitOfWork.Users.FindAsync(u => u.Id == patient.UserId);
+                    patient.User = users.FirstOrDefault()!;
+                }
+            }
+
+            // Sort
+            if (!string.IsNullOrEmpty(request.SortBy))
+            {
+                patientsList = request.SortBy.ToLower() switch
+                {
+                    "name" => request.SortOrder.ToLower() == "desc"
+                        ? patientsList.OrderByDescending(p => p.User.FirstName).ToList()
+                        : patientsList.OrderBy(p => p.User.FirstName).ToList(),
+                    "patientnumber" => request.SortOrder.ToLower() == "desc"
+                        ? patientsList.OrderByDescending(p => p.PatientNumber).ToList()
+                        : patientsList.OrderBy(p => p.PatientNumber).ToList(),
+                    "createdat" => request.SortOrder.ToLower() == "desc"
+                        ? patientsList.OrderByDescending(p => p.CreatedAt).ToList()
+                        : patientsList.OrderBy(p => p.CreatedAt).ToList(),
+                    _ => patientsList.OrderBy(p => p.Id).ToList()
+                };
+            }
+
+            // Pagination
+            var totalCount = patientsList.Count;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize);
+
+            var pagedPatients = patientsList
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
+
+            var patientDtos = _mapper.Map<List<PatientDto>>(pagedPatients);
+
+            var pagedResult = new PagedResult<PatientDto>
+            {
+                Items = patientDtos,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalCount = totalCount
+            };
+
+            return ApiResponse<PagedResult<PatientDto>>.SuccessResponse(pagedResult);
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse<PagedResult<PatientDto>>.FailureResponse($"Error: {ex.Message}");
+        }
+    }
+
+    public async Task<ApiResponse<List<PatientDto>>> SearchPatientsAsync(string searchTerm)
+    {
+        try
+        {
+            var patients = await _unitOfWork.Patients.GetAllAsync();
+            var patientsList = patients.ToList();
+            var searchLower = searchTerm.ToLower();
+
+            var filteredList = new List<Patient>();
+            foreach (var patient in patientsList)
+            {
+                var users = await _unitOfWork.Users.FindAsync(u => u.Id == patient.UserId);
+                var user = users.FirstOrDefault();
+
+                if (user != null)
+                {
+                    patient.User = user;
+
+                    if (patient.PatientNumber.ToLower().Contains(searchLower) ||
+                        user.FirstName.ToLower().Contains(searchLower) ||
+                        user.LastName.ToLower().Contains(searchLower) ||
+                        user.Email.ToLower().Contains(searchLower) ||
+                        user.PhoneNumber.Contains(searchLower))
+                    {
+                        filteredList.Add(patient);
+                    }
+                }
+            }
+
+            var patientDtos = _mapper.Map<List<PatientDto>>(filteredList);
+            return ApiResponse<List<PatientDto>>.SuccessResponse(patientDtos);
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse<List<PatientDto>>.FailureResponse($"Error: {ex.Message}");
+        }
+    }
+
+
 }

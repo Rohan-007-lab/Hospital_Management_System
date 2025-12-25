@@ -87,5 +87,17 @@ public class MappingProfile : Profile
                 src.CurrentPatientId.HasValue ? "Patient Name" : null));
         CreateMap<CreateBedDto, Bed>();
 
+
+        CreateMap<Ward, WardDto>();
+        CreateMap<CreateWardDto, Ward>();
+
+        // Bed Mappings
+        CreateMap<Bed, BedDto>()
+            .ForMember(dest => dest.WardName, opt => opt.MapFrom(src => src.Ward.WardName))
+            .ForMember(dest => dest.CurrentPatientName, opt => opt.MapFrom(src =>
+                src.CurrentPatientId.HasValue && src.Ward != null ? "Patient" : null));
+        CreateMap<CreateBedDto, Bed>();
+
+
     }
 }

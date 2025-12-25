@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using HMS.Application.DTOs.Patient;
+﻿using HMS.Application.DTOs.Patient;
 using HMS.Application.Interfaces;
+using HMS.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers;
@@ -106,4 +106,40 @@ public class PatientsController : ControllerBase
 
         return Ok(result);
     }
+
+
+    [HttpPost("paged")]
+    [Authorize(Roles = "Admin,Doctor,Nurse,Receptionist")]
+    public async Task<IActionResult> GetPatientsPaged([FromBody] PagedRequest request)
+    {
+        var result = await _patientService.GetPatientsPagedAsync(request);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("search")]
+    [Authorize(Roles = "Admin,Doctor,Nurse,Receptionist")]
+    public async Task<IActionResult> SearchPatients([FromQuery] string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            return BadRequest(ApiResponse<List<PatientDto>>.FailureResponse("Search term is required"));
+        }
+
+        var result = await _patientService.SearchPatientsAsync(searchTerm);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
+
+
 }

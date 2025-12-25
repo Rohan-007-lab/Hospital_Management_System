@@ -17,4 +17,6 @@ public interface IPatientService
     Task<ApiResponse<PatientDto>> UpdatePatientAsync(UpdatePatientDto dto);
     Task<ApiResponse<bool>> DeletePatientAsync(int id);
     Task<ApiResponse<PatientDto>> GetPatientByUserIdAsync(int userId);
+    Task<ApiResponse<PagedResult<PatientDto>>> GetPatientsPagedAsync(PagedRequest request);
+    Task<ApiResponse<List<PatientDto>>> SearchPatientsAsync(string searchTerm);
 }
