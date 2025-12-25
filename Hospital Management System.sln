@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Application", "HMS.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Domain", "HMS.Domain\HMS.Domain.csproj", "{F5C6F4D9-D2B3-4FB7-8FFD-688F95071F71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Infrastructure", "HMS.Infrastructure\HMS.Infrastructure.csproj", "{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Shared", "HMS.Shared\HMS.Shared.csproj", "{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{F5C6F4D9-D2B3-4FB7-8FFD-688F95071F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5C6F4D9-D2B3-4FB7-8FFD-688F95071F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5C6F4D9-D2B3-4FB7-8FFD-688F95071F71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
