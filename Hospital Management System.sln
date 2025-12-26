@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.API", "HMS.API\HMS.API.csproj", "{91944DED-48C8-48A6-B980-37B0058D777E}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Infrastructure", "HMS.Infrastructure\HMS.Infrastructure.csproj", "{AED8FA1D-CCD9-45EE-8385-C6DAB2D64A3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Shared", "HMS.Shared\HMS.Shared.csproj", "{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS.Web", "HMS.Web\HMS.Web.csproj", "{E37884A6-F59B-41AB-A99F-AA87D7E29728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F7FEBC2-0D8B-470B-88A6-86BEC0DBDE54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E37884A6-F59B-41AB-A99F-AA87D7E29728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37884A6-F59B-41AB-A99F-AA87D7E29728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37884A6-F59B-41AB-A99F-AA87D7E29728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37884A6-F59B-41AB-A99F-AA87D7E29728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
