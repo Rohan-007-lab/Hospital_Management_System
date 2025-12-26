@@ -6,10 +6,11 @@ using HMS.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+//using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using QuestPDF.Infrastructure;
 using System.Text;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -120,7 +121,7 @@ builder.Services.AddScoped<IBillingService, BillingService>();
 builder.Services.AddScoped<IWardService, WardService>();           // NEW
 builder.Services.AddScoped<IBedService, BedService>();             // NEW
 builder.Services.AddScoped<IDashboardService, DashboardService>(); // NEW
-builder.Services.AddScoped<IReportService, IReportService>();       // NEW
+//builder.Services.AddScoped<IReportService, IReportService>();       // NEW
 builder.Services.AddScoped<IFileService, FileService>();           // NEW
 
 
@@ -138,16 +139,17 @@ if (app.Environment.IsDevelopment())
 }
 
 
+
 // Before app.UseHttpsRedirection();
-app.UseStaticFiles(); // Enable static files
+//app.UseStaticFiles(); // Enable static files
 
 // Configure static files from Uploads folder
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
-    RequestPath = "/uploads"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+//    RequestPath = "/uploads"
+//});
 
 app.UseHttpsRedirection();
 
