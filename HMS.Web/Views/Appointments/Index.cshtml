@@ -1,0 +1,201 @@
+﻿@model List<HMS.Web.Models.AppointmentViewModel>
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-calendar-check"></i> Appointments</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Appointments</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a href="@Url.Action("Create", "Appointments")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Book Appointment
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Tabs -->
+<div class="stat-card mb-4">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="filterAppointments('all')">
+                <i class="fas fa-list"></i> All
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterAppointments('Scheduled')">
+                <i class="fas fa-clock"></i> Scheduled
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterAppointments('Confirmed')">
+                <i class="fas fa-check"></i> Confirmed
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterAppointments('InProgress')">
+                <i class="fas fa-spinner"></i> In Progress
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterAppointments('Completed')">
+                <i class="fas fa-check-circle"></i> Completed
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="filterAppointments('Cancelled')">
+                <i class="fas fa-times-circle"></i> Cancelled
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Appointments Table -->
+<div class="stat-card">
+    <div class="table-responsive">
+        <table class="table table-hover" id="appointmentsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Appointment No</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+                    foreach (var appointment in Model)
+                    {
+                        <tr data-status="@appointment.Status">
+                            <td>@index</td>
+                            <td><span class="badge bg-primary">@appointment.AppointmentNumber</span></td>
+                            <td>
+                                <i class="fas fa-user-injured text-primary"></i>
+                                @appointment.PatientName
+                            </td>
+                            <td>
+                                <i class="fas fa-user-md text-success"></i>
+                                @appointment.DoctorName
+                            </td>
+                            <td>@appointment.AppointmentDate.ToString("dd MMM yyyy")</td>
+                            <td>@appointment.AppointmentTime.ToString(@"hh\:mm")</td>
+                            <td>@appointment.ReasonForVisit</td>
+                            <td>
+                                @switch (appointment.Status)
+                                {
+                                    case "Scheduled":
+                                        <span class="badge bg-info">@appointment.Status</span>
+                                        break;
+                                    case "Confirmed":
+                                        <span class="badge bg-primary">@appointment.Status</span>
+                                        break;
+                                    case "InProgress":
+                                        <span class="badge bg-warning">In Progress</span>
+                                        break;
+                                    case "Completed":
+                                        <span class="badge bg-success">@appointment.Status</span>
+                                        break;
+                                    case "Cancelled":
+                                        <span class="badge bg-danger">@appointment.Status</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary">@appointment.Status</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-sm btn-outline-primary" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    @if (appointment.Status != "Completed" && appointment.Status != "Cancelled")
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(@appointment.Id)" title="Cancel">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No appointments found</h5>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .nav-pills .nav-link {
+        color: #667eea;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 20px;
+        margin-right: 5px;
+    }
+
+    .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function filterAppointments(status) {
+            const rows = document.querySelectorAll('#appointmentsTable tbody tr');
+            const links = document.querySelectorAll('.nav-pills .nav-link');
+            
+            links.forEach(link => link.classList.remove('active'));
+            event.target.closest('.nav-link').classList.add('active');
+
+            rows.forEach(row => {
+                if (status === 'all' || row.dataset.status === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function cancelAppointment(id) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                fetch('@Url.Action("Cancel", "Appointments")/' + id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,172 @@
+﻿@model List<HMS.Web.Models.LabTestViewModel>
+@{
+    ViewData["Title"] = "Lab Tests";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-flask"></i> Laboratory Tests</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Lab Tests</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a href="@Url.Action("Create", "LabTests")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Request Lab Test
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Status Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <div class="stat-icon-small blue mb-2">
+                <i class="fas fa-vial"></i>
+            </div>
+            <h4>@(Model?.Count(l => l.Status == "Requested") ?? 0)</h4>
+            <p class="text-muted mb-0 small">Requested</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <div class="stat-icon-small orange mb-2">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <h4>@(Model?.Count(l => l.Status == "InProgress") ?? 0)</h4>
+            <p class="text-muted mb-0 small">In Progress</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <div class="stat-icon-small green mb-2">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h4>@(Model?.Count(l => l.Status == "Completed") ?? 0)</h4>
+            <p class="text-muted mb-0 small">Completed</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <div class="stat-icon-small cyan mb-2">
+                <i class="fas fa-file-medical"></i>
+            </div>
+            <h4>@(Model?.Count(l => l.Status == "ReportReady") ?? 0)</h4>
+            <p class="text-muted mb-0 small">Report Ready</p>
+        </div>
+    </div>
+</div>
+
+<!-- Lab Tests Table -->
+<div class="stat-card">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Test Number</th>
+                    <th>Patient</th>
+                    <th>Test Name</th>
+                    <th>Test Type</th>
+                    <th>Requested Date</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+                    foreach (var test in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td><span class="badge bg-primary">@test.TestNumber</span></td>
+                            <td>
+                                <i class="fas fa-user-injured text-primary"></i>
+                                @test.PatientName
+                            </td>
+                            <td><strong>@test.TestName</strong></td>
+                            <td><span class="badge bg-info">@test.TestType</span></td>
+                            <td>@test.RequestedDate.ToString("dd MMM yyyy")</td>
+                            <td>₹@test.TestPrice.ToString("N2")</td>
+                            <td>
+                                @switch (test.Status)
+                                {
+                                    case "Requested":
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-clock"></i> Requested
+                                        </span>
+                                        break;
+                                    case "SampleCollected":
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-vial"></i> Sample Collected
+                                        </span>
+                                        break;
+                                    case "InProgress":
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-spinner fa-spin"></i> In Progress
+                                        </span>
+                                        break;
+                                    case "Completed":
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check"></i> Completed
+                                        </span>
+                                        break;
+                                    case "ReportReady":
+                                        <span class="badge bg-primary">
+                                            <i class="fas fa-file-medical"></i> Report Ready
+                                        </span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary">@test.Status</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-sm btn-outline-primary" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    @if (test.Status == "ReportReady" || test.Status == "Completed")
+                                    {
+                                        <button class="btn btn-sm btn-outline-success" title="Download Report">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    }
+                                    @if (test.Status == "Requested" || test.Status == "SampleCollected")
+                                    {
+                                        <button class="btn btn-sm btn-outline-warning" title="Update Status">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center py-5">
+                            <i class="fas fa-vials fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No lab tests found</h5>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .stat-icon-small.cyan { background: linear-gradient(135deg, #00d2d3 0%, #0097e6 100%); }
+</style>

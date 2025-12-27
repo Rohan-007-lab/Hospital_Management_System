@@ -1,0 +1,123 @@
+﻿@model HMS.Web.Models.CreateAppointmentViewModel
+@{
+    ViewData["Title"] = "Book Appointment";
+    var patients = ViewBag.Patients as List<HMS.Web.Models.PatientViewModel>;
+    var doctors = ViewBag.Doctors as List<HMS.Web.Models.DoctorViewModel>;
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-calendar-plus"></i> Book Appointment</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Appointments")">Appointments</a></li>
+                    <li class="breadcrumb-item active">Book New</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a href="@Url.Action("Index", "Appointments")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Appointment Form -->
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <form asp-action="Create" method="post">
+            <div class="stat-card">
+                <h5 class="mb-4"><i class="fas fa-info-circle"></i> Appointment Details</h5>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PatientId" class="form-label">Select Patient <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user-injured"></i></span>
+                            <select asp-for="PatientId" class="form-control">
+                                <option value="">-- Select Patient --</option>
+                                @if (patients != null)
+                                {
+                                    foreach (var patient in patients)
+                                    {
+                                        <option value="@patient.Id">@patient.FirstName @patient.LastName (@patient.PatientNumber)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="PatientId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DoctorId" class="form-label">Select Doctor <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user-md"></i></span>
+                            <select asp-for="DoctorId" class="form-control">
+                                <option value="">-- Select Doctor --</option>
+                                @if (doctors != null)
+                                {
+                                    foreach (var doctor in doctors)
+                                    {
+                                        <option value="@doctor.Id">Dr. @doctor.FirstName @doctor.LastName - @doctor.Specialization</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="DoctorId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AppointmentDate" class="form-label">Appointment Date <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input asp-for="AppointmentDate" type="date" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <span asp-validation-for="AppointmentDate" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AppointmentTime" class="form-label">Appointment Time <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            <input asp-for="AppointmentTime" type="time" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AppointmentTime" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReasonForVisit" class="form-label">Reason for Visit <span class="text-danger">*</span></label>
+                    <textarea asp-for="ReasonForVisit" class="form-control" rows="3" placeholder="Brief description of the visit reason"></textarea>
+                    <span asp-validation-for="ReasonForVisit" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Symptoms" class="form-label">Symptoms (Optional)</label>
+                    <textarea asp-for="Symptoms" class="form-control" rows="3" placeholder="Any symptoms the patient is experiencing"></textarea>
+                    <span asp-validation-for="Symptoms" class="text-danger small"></span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Index", "Appointments")" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

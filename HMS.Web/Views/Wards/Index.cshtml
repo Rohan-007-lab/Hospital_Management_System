@@ -1,0 +1,231 @@
+﻿@model List<HMS.Web.Models.WardViewModel>
+@{
+    ViewData["Title"] = "Wards & Beds";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-bed"></i> Wards & Beds Management</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Wards</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <button class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Ward
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Wards Grid -->
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var ward in Model)
+        {
+            var occupancyPercent = ward.TotalBeds > 0 ? (ward.OccupiedBeds * 100.0 / ward.TotalBeds) : 0;
+            var statusClass = occupancyPercent > 80 ? "danger" : occupancyPercent > 50 ? "warning" : "success";
+
+            <div class="col-lg-6 mb-4">
+                <div class="stat-card ward-card">
+                    <div class="ward-header @statusClass">
+                        <h5 class="mb-0">
+                            <i class="fas fa-hospital"></i> @ward.WardName
+                        </h5>
+                        <span class="badge bg-white text-dark">@ward.WardType</span>
+                    </div>
+
+                    <div class="ward-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ward-info">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Floor</small>
+                                        <p class="mb-0"><strong>@ward.Floor</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ward-info">
+                                    <i class="fas fa-rupee-sign text-success"></i>
+                                    <div>
+                                        <small class="text-muted">Charges/Day</small>
+                                        <p class="mb-0"><strong>₹@ward.ChargesPerDay</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="bed-stats">
+                            <div class="bed-stat">
+                                <div class="bed-icon total">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">@ward.TotalBeds</h4>
+                                    <small class="text-muted">Total Beds</small>
+                                </div>
+                            </div>
+
+                            <div class="bed-stat">
+                                <div class="bed-icon available">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">@ward.AvailableBeds</h4>
+                                    <small class="text-muted">Available</small>
+                                </div>
+                            </div>
+
+                            <div class="bed-stat">
+                                <div class="bed-icon occupied">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">@ward.OccupiedBeds</h4>
+                                    <small class="text-muted">Occupied</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="occupancy-bar mt-3">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-@statusClass" role="progressbar" 
+                                     style="width: @occupancyPercent%" 
+                                     aria-valuenow="@occupancyPercent" aria-valuemin="0" aria-valuemax="100">
+                                    @occupancyPercent.ToString("F1")% Occupied
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ward-footer">
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> View Beds
+                        </button>
+                        <button class="btn btn-sm btn-outline-success">
+                            <i class="fas fa-user-plus"></i> Assign Bed
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="stat-card text-center py-5">
+                <i class="fas fa-hospital fa-5x text-muted mb-3"></i>
+                <h4 class="text-muted">No wards found</h4>
+                <p class="text-muted">Start by adding your first ward</p>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Ward
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .ward-card {
+        overflow: hidden;
+    }
+
+    .ward-header {
+        padding: 20px;
+        margin: -25px -25px 20px -25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .ward-header.success {
+        background: linear-gradient(135deg, #2ed573 0%, #009432 100%);
+    }
+
+    .ward-header.warning {
+        background: linear-gradient(135deg, #ffa502 0%, #ff6348 100%);
+    }
+
+    .ward-header.danger {
+        background: linear-gradient(135deg, #ff4757 0%, #c23616 100%);
+    }
+
+    .ward-info {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .ward-info i {
+        font-size: 24px;
+    }
+
+    .bed-stats {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .bed-stat {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bed-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+    }
+
+    .bed-icon.total {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bed-icon.available {
+        background: linear-gradient(135deg, #2ed573 0%, #009432 100%);
+    }
+
+    .bed-icon.occupied {
+        background: linear-gradient(135deg, #ff4757 0%, #c23616 100%);
+    }
+
+    .ward-footer {
+        display: flex;
+        gap: 8px;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .ward-footer .btn {
+        flex: 1;
+    }
+
+    .occupancy-bar .progress-bar {
+        font-size: 14px;
+        font-weight: 600;
+    }
+</style>

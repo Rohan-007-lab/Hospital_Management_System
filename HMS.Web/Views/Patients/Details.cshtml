@@ -1,0 +1,344 @@
+﻿@model HMS.Web.Models.PatientViewModel
+@{
+    ViewData["Title"] = "Patient Details";
+    var age = DateTime.Now.Year - Model.DateOfBirth.Year;
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-user-injured"></i> Patient Details</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Patients")">Patients</a></li>
+                    <li class="breadcrumb-item active">@Model.PatientNumber</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a href="@Url.Action("Edit", "Patients", new { id = Model.Id })" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Patient Info Card -->
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="stat-card text-center">
+            <!-- Profile Avatar -->
+            <div class="profile-avatar mx-auto mb-3">
+                @{
+                    var initials = $"{Model.FirstName[0]}{Model.LastName[0]}";
+                }
+                @initials
+            </div>
+            
+            <h4 class="mb-1">@Model.FirstName @Model.LastName</h4>
+            <p class="text-muted mb-3">
+                <span class="badge bg-primary">@Model.PatientNumber</span>
+            </p>
+
+            <div class="patient-quick-info">
+                <div class="info-item">
+                    <i class="fas fa-calendar text-primary"></i>
+                    <span>@age years old</span>
+                </div>
+                <div class="info-item">
+                    @if (Model.Gender == "Male")
+                    {
+                        <i class="fas fa-mars text-info"></i>
+                    }
+                    else if (Model.Gender == "Female")
+                    {
+                        <i class="fas fa-venus text-pink"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-user"></i>
+                    }
+                    <span>@Model.Gender</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-tint text-danger"></i>
+                    <span>@Model.BloodGroup</span>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="contact-info text-start">
+                <div class="mb-2">
+                    <i class="fas fa-envelope text-primary me-2"></i>
+                    <small>@Model.Email</small>
+                </div>
+                <div class="mb-2">
+                    <i class="fas fa-phone text-success me-2"></i>
+                    <small>@Model.PhoneNumber</small>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <small>@Model.Address</small>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="d-grid gap-2">
+                <a href="#" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-calendar-plus"></i> Book Appointment
+                </a>
+                <a href="#" class="btn btn-outline-success btn-sm">
+                    <i class="fas fa-prescription"></i> New Prescription
+                </a>
+                <a href="#" class="btn btn-outline-info btn-sm">
+                    <i class="fas fa-flask"></i> Request Lab Test
+                </a>
+                <a href="#" class="btn btn-outline-warning btn-sm">
+                    <i class="fas fa-file-invoice"></i> Generate Bill
+                </a>
+            </div>
+        </div>
+
+        <!-- Registration Info -->
+        <div class="stat-card mt-3">
+            <h6 class="mb-3"><i class="fas fa-info-circle"></i> Registration Info</h6>
+            <small class="text-muted">Registered On</small>
+            <p class="mb-0"><strong>@Model.CreatedAt.ToString("dd MMMM yyyy")</strong></p>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <!-- Medical Information -->
+        <div class="stat-card mb-4">
+            <h5 class="mb-4"><i class="fas fa-heartbeat"></i> Medical Information</h5>
+            
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label class="detail-label">Medical History</label>
+                    <div class="detail-value">
+                        @if (!string.IsNullOrEmpty(Model.MedicalHistory))
+                        {
+                            <p>@Model.MedicalHistory</p>
+                        }
+                        else
+                        {
+                            <p class="text-muted"><em>No medical history recorded</em></p>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="detail-label">Known Allergies</label>
+                    <div class="detail-value">
+                        @if (!string.IsNullOrEmpty(Model.Allergies))
+                        {
+                            <div class="alert alert-warning mb-0">
+                                <i class="fas fa-exclamation-triangle"></i> @Model.Allergies
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted"><em>No allergies recorded</em></p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <div class="stat-icon-small blue mb-2">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4 class="mb-1">0</h4>
+                    <p class="text-muted mb-0 small">Appointments</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <div class="stat-icon-small green mb-2">
+                        <i class="fas fa-prescription"></i>
+                    </div>
+                    <h4 class="mb-1">0</h4>
+                    <p class="text-muted mb-0 small">Prescriptions</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <div class="stat-icon-small orange mb-2">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h4 class="mb-1">0</h4>
+                    <p class="text-muted mb-0 small">Lab Tests</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card text-center">
+                    <div class="stat-icon-small red mb-2">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h4 class="mb-1">0</h4>
+                    <p class="text-muted mb-0 small">Bills</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Tabs -->
+        <div class="stat-card">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#appointments">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#prescriptions">
+                        <i class="fas fa-prescription"></i> Prescriptions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#labtests">
+                        <i class="fas fa-flask"></i> Lab Tests
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#bills">
+                        <i class="fas fa-file-invoice"></i> Bills
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content p-3">
+                <div class="tab-pane fade show active" id="appointments">
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No appointments yet</h5>
+                        <p class="text-muted">Book the first appointment for this patient</p>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Book Appointment
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="prescriptions">
+                    <div class="text-center py-5">
+                        <i class="fas fa-prescription-bottle fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No prescriptions yet</h5>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="labtests">
+                    <div class="text-center py-5">
+                        <i class="fas fa-vial fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No lab tests yet</h5>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="bills">
+                    <div class="text-center py-5">
+                        <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No bills yet</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .patient-quick-info {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .info-item i {
+        font-size: 24px;
+    }
+
+    .info-item span {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .contact-info {
+        font-size: 14px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #667eea;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .detail-value {
+        font-size: 14px;
+        color: #2c3e50;
+    }
+
+    .stat-icon-small {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 24px;
+        color: white;
+    }
+
+    .stat-icon-small.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .stat-icon-small.green { background: linear-gradient(135deg, #2ed573 0%, #009432 100%); }
+    .stat-icon-small.orange { background: linear-gradient(135deg, #ffa502 0%, #ff6348 100%); }
+    .stat-icon-small.red { background: linear-gradient(135deg, #ff4757 0%, #c23616 100%); }
+
+    .nav-tabs {
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        color: #7f8c8d;
+        font-weight: 600;
+        padding: 15px 20px;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #667eea;
+        border-bottom: 3px solid #667eea;
+    }
+
+    .text-pink {
+        color: #f5576c;
+    }
+</style>
