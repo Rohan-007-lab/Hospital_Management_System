@@ -1,4 +1,4 @@
-using HMS.Application.Interfaces;
+﻿using HMS.Application.Interfaces;
 using HMS.Application.Services;
 using HMS.Infrastructure.Data;
 using HMS.Infrastructure.Repositories;
@@ -96,14 +96,20 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// CORS Configuration
+// HMS.API/Program.cs मध्ये CORS section हा बदला:
+
+// CORS Configuration - UPDATED
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        builder.WithOrigins(
+                "https://localhost:7258",  // HMS.Web HTTPS
+                "http://localhost:5107"    // HMS.Web HTTP
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
 

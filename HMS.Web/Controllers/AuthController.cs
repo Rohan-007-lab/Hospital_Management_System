@@ -37,7 +37,7 @@ public class AuthController : Controller
 
         try
         {
-            var response = await _apiService.PostAsync<ApiResponse<LoginResponse>>("/Auth/login", new
+            var response = await _apiService.PostAsync<ApiResponse<LoginResponse>>("/api/Auth/login", new
             {
                 email = model.Email,
                 password = model.Password
