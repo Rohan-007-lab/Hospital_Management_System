@@ -20,5 +20,5 @@ public class MedicineDto
     public DateTime? ExpiryDate { get; set; }
     public string? BatchNumber { get; set; }
     public bool IsLowStock => StockQuantity <= ReorderLevel;
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set;}
 }

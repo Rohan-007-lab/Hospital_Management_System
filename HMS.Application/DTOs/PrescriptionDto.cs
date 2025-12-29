@@ -18,7 +18,7 @@ public class PrescriptionDto
     public DateTime PrescriptionDate { get; set; }
     public string Diagnosis { get; set; } = string.Empty;
     public string GeneralInstructions { get; set; } = string.Empty;
-    public string? FollowUpDate { get; set; }
+    public string? FollowUpDate { get; set;}
     public List<PrescriptionMedicineDto> Medicines { get; set; } = new();
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set;}
 }
