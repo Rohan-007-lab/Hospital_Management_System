@@ -24,6 +24,6 @@ public class LabTestDto
     public string? ReportUrl { get; set; }
     public decimal TestPrice { get; set; }
     public string? TechnicianNotes { get; set; }
-    public int? RequestedByDoctorId { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public int? RequestedByDoctorId { get; set;}
+    public DateTime CreatedAt { get; set;}
 }
