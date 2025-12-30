@@ -8,8 +8,8 @@ namespace HMS.Application.DTOs.Dashboard;
 
 public class AppointmentAnalyticsDto
 {
-    public int TodayAppointments { get; set;}
-    public int WeekAppointments { get; set;}
+    public int TodayAppointments {get; set;}
+    public int WeekAppointments {get; set;}
     public int MonthAppointments { get; set;}
     public List<AppointmentByStatusDto> ByStatus { get; set; } = new();
     public List<AppointmentByDoctorDto> TopDoctors { get; set; } = new();
@@ -17,8 +17,8 @@ public class AppointmentAnalyticsDto
 
 public class AppointmentByStatusDto
 {
-    public string Status { get; set; } = string.Empty;
-    public int Count { get; set; }
+    public string Status { get; set;} = string.Empty;
+    public int Count { get; set;}
 }
 
 public class AppointmentByDoctorDto

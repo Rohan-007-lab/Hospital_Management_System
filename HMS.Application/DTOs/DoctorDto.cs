@@ -20,8 +20,8 @@ public class DoctorDto
     public decimal ConsultationFee { get; set;}
     public string WorkingDays { get; set; } = string.Empty;
     public TimeSpan WorkingHoursStart { get; set; }
-    public TimeSpan WorkingHoursEnd { get; set; }
-    public int ConsultationDurationMinutes { get; set; }
+    public TimeSpan WorkingHoursEnd { get; set;}
+    public int ConsultationDurationMinutes { get; set;}
     public DateTime CreatedAt { get; set; }
 
     // User details
