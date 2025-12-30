@@ -17,8 +17,8 @@ public class MedicineDto
     public decimal UnitPrice { get; set; }
     public int StockQuantity { get; set; }
     public int ReorderLevel { get; set; }
-    public DateTime? ExpiryDate { get; set; }
-    public string? BatchNumber { get; set; }
+    public DateTime? ExpiryDate { get; set;}
+    public string? BatchNumber { get; set;}
     public bool IsLowStock => StockQuantity <= ReorderLevel;
     public DateTime CreatedAt { get; set;}
 }

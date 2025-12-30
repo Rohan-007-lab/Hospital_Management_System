@@ -8,11 +8,11 @@ namespace HMS.Application.DTOs.Dashboard;
 
 public class DashboardStatsDto
 {
-    public int TotalPatients { get; set;}
-    public int ActivePatients { get; set;}
+    public int TotalPatients {get; set;}
+    public int ActivePatients {get; set;}
     public int TotalDoctors { get; set; }
     public int TodayAppointments { get; set; }
-    public int PendingAppointments { get; set; }
+    public int PendingAppointments {get; set; }
     public int CompletedAppointments { get; set; }
     public int TotalBeds { get; set; }
     public int AvailableBeds { get; set; }
